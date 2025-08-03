@@ -1,7 +1,9 @@
 FROM node:18
 
-# Atualiza e instala whois e traceroute
-RUN apt-get update && apt-get install -y whois traceroute
+# Atualiza e instala whois, traceroute, dig, host e nslookup
+RUN apt-get update && \
+    apt-get install -y whois traceroute dnsutils bind9-host && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

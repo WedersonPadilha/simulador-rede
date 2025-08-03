@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulador de Rede</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🔌 Simulador de Rede</h1>
+    <form id="networkForm">
+      <input type="text" id="host" placeholder="Digite um domínio ou IP (ex: google.com)" required />
+      <select id="command">
+        <option value="traceroute">Traceroute</option>
+        <option value="nslookup">Nslookup</option>
+        <option value="whois">Whois</option>
+        <option value="host">Host</option>
+        <option value="dig">Dig</option>
+      </select>
+      <button type="submit">Executar</button>
+    </form>
+    <pre id="output">Resultado será exibido aqui...</pre>
+  </div>
+
+  <script>
+    const form = document.getElementById('networkForm');
+    const output = document.getElementById('output');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const host = document.getElementById('host').value;
+      const command = document.getElementById('command').value;
+
+      output.textContent = 'Executando...';
+
+      const res = await fetch('/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ host, command })
+      });
+
+      const data = await res.text();
+      output.textContent = data;
+    });
+  </script>
+</body>
+</html>
